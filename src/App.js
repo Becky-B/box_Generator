@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import Box from './components/Box/Box';
+import { cleanup } from '@testing-library/react';
 
 
 function App() {
@@ -9,27 +10,21 @@ function App() {
   const [width, setWidth] = useState("");
   const [colors, setColors] = useState([]);
   
-
-
-  const colorHandler = e => {
-    setColor("")
-  }
-
-
   const form = e => {
     e.preventDefault()
-    const array = [...colors]
-    array.push({
+    setColors([...colors, {
       color : e.target.color.value, 
       height : e.target.height.value,
       width : e.target.width.value
-    })
-    setColors(array)
-    colorHandler();
-    console.log(colors)
-    console.log(e.target.color.value)
+    }])
+    cleanUpForm()
   }
 
+  function cleanUpForm(){
+    setColor("")
+    setHeight("")
+    setWidth("")
+  }
 
 
   return (
@@ -37,15 +32,15 @@ function App() {
       <form onSubmit={form}>
         <div>
           <label htmlFor="color">Color: </label>
-          <input type="text" name="color"/>
+          <input type="text" name="color" onChange={ e => setColor(e.target.value)} value={color}/>
         </div>
         <div>
           <label htmlFor="width">Width: </label>
-          <input type="text" name="width"/>
+          <input type="text" name="width" onChange={ e => setWidth(e.target.value)} value={width}/>
         </div>
         <div>
           <label htmlFor = "height">Height: </label>
-          <input type="text" name="height"/>
+          <input type="text" name="height" onChange={ e => setHeight(e.target.value)} value={height}/>
         </div>
         <button type="submit">Add Color</button>
 
